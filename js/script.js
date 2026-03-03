@@ -2,6 +2,16 @@ $(document).ready(function(){
    var scroll_start = 0;
    var startchange = $('#navchange');
    var offset = startchange.offset();
+   var $window = $(window),
+        $body = $('body');
+
+    $body.addClass('is-loading');
+    $window.on('load', function() {
+        window.setTimeout(function() {
+            $body.removeClass('is-loading');
+        }, 100);
+    });
+    
     
     if (startchange.length){
    $(document).scroll(function() { 
@@ -75,9 +85,15 @@ $(document).ready(function(){
         var val = 0;
         var mssge = "------------------------------------------- \n";
         
-        val = $("#pagecount").val();
-        total = Math.floor(((parseInt(val) * 50) )); //+ 50/(val>0?val:1)
-        mssge += val + " pages \n";
+        if(($("#pagecount").val()) > 0) {
+            val = $("#pagecount").val();
+            total = Math.floor(((parseInt(val) * 50) )); //+ 50/(val>0?val:1)
+            mssge += val + " pages \n";
+        } else {
+            val = 1;
+            total = Math.floor(((parseInt(val) * 50) )); //+ 50/(val>0?val:1)
+            mssge += val + " pages \n";
+        }
         
         //login
         if($("[name='q2checkbox1']").bootstrapSwitch('state')) {
@@ -121,7 +137,7 @@ $(document).ready(function(){
             mssge += "Has CMS \n";
         }
         
-        mssge += total + "$ Total estimate \n";
+        mssge += total + "₹ Total estimate \n";
         mssge += "-------------------------------------------";
         
         if($("[name='q8checkbox1']").bootstrapSwitch('state')) {
@@ -130,7 +146,7 @@ $(document).ready(function(){
             $('#message').val("");
         }
         
-        $('input[name="totalfield"]').val(total+"$");
+        $('input[name="totalfield"]').val(total+"₹");
         console.log("mssge " + mssge);
     }
     
